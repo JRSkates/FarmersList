@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "jest",
     "test:report": "jest --coverage=true"
   },
   "repository": {
@@ -18,7 +18,7 @@
     "url": "https://github.com/MultiverseLearningProducts/FarmersList/issues"
   },
   "homepage": "https://github.com/MultiverseLearningProducts/FarmersList#readme",
-  "dependencies": {
-    "jest": "^29.5.0"
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
