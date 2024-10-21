@@ -18,6 +18,7 @@ describe("Product Tests", () => {
         const carrots = new Product("Carrots", 4, "Bushel of carrots that have been freshly harvested for you");
         expect(carrots.display()).toEqual("Name: Carrots, Price: $4, Description: Bushel of carrots that have been freshly harvested for you");
     });
+  
 })
 
 describe("Cart Tests", () => {
@@ -67,7 +68,7 @@ describe("Cart Tests", () => {
         expect(myCart.products.length).toEqual(0);
         expect(myCart.total).toEqual(0);
     });
-        
+
 })
 
 describe("Customer Tests", () => {
@@ -103,6 +104,20 @@ describe("Customer Tests", () => {
         francis.addToOrderHistory(mySecondOrder);
         expect(francis.orderHistory.length).toEqual(2);
     });
+
+    test('rewardPoints are calculated correctly based on order history', () => {
+        const strawberries = new Product("Strawberries", 5, "Fresh strawberries", 10);
+        const carrots = new Product("Carrots", 2, "Perfect for a snack", 5);
+        
+        const francis = new Customer("Francis", "francis@gmail.com", "222 Main St");
+        const myOrder = new Cart();
+        myOrder.addProduct(strawberries);
+        myOrder.addProduct(carrots);
+        francis.addToOrderHistory(myOrder);
+        
+        francis.getRewardPoints(); // Updates rewardPoints
+        expect(francis.rewardPoints).toEqual(15); // 10 from strawberries + 5 from carrots
+    });  
 })
 
 describe("Auth Tests", () => {
