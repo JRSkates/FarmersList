@@ -6,10 +6,23 @@ class Cart {
         this.total = 0;
     }
 
-    addProduct(product) {
+    addProduct(product, quantity) {
         if(product instanceof Product) {
+            if (product.quantity < quantity) {
+                return `I'm sorry there are only ${product.quantity} of this product left.`;
+            }
+
             this.products.push(product);
-            this.total += product.price;
+
+            this.total += product.price * quantity;
+
+            product.quantity -= quantity;
+
+            if (product.quantity === 0) {
+                product.inStock = false;
+            }
+
+            return product;
         } else {
             throw new Error("Product must be instance of Product");
         }

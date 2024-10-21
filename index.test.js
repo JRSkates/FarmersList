@@ -2,12 +2,12 @@ const { Product, Cart, Customer, Auth } = require('./index.js');
 
 describe("Product Tests", () => {
     test('Can create instance of product class', () => {
-        const carrots = new Product("Carrots", 4, "Bushel of carrots that have been freshly harvested for you");
+        const carrots = new Product("Carrots", 4, "Bushel of carrots that have been freshly harvested for you", 5, 1);
         expect(carrots instanceof Product).toEqual(true);
     });
 
     test('Correctly sets values of name, price, description, and inStock', () => {
-        const carrots = new Product("Carrots", 4, "Bushel of carrots that have been freshly harvested for you");
+        const carrots = new Product("Carrots", 4, "Bushel of carrots that have been freshly harvested for you", 5, 1);
         expect(carrots.name).toEqual("Carrots");
         expect(carrots.price).toEqual(4);
         expect(carrots.description).toEqual("Bushel of carrots that have been freshly harvested for you");
@@ -15,7 +15,7 @@ describe("Product Tests", () => {
     });
 
     test('display method returns correct string', () => {
-        const carrots = new Product("Carrots", 4, "Bushel of carrots that have been freshly harvested for you");
+        const carrots = new Product("Carrots", 4, "Bushel of carrots that have been freshly harvested for you", 5, 1);
         expect(carrots.display()).toEqual("Name: Carrots, Price: $4, Description: Bushel of carrots that have been freshly harvested for you");
     });
   
@@ -31,37 +31,37 @@ describe("Cart Tests", () => {
     });
 
     test('Can add products to array with addProduct', () => {
-        const carrots = new Product("Carrots", 2, "Perfect for an afternoon snack");
+        const carrots = new Product("Carrots", 2, "Perfect for an afternoon snack", 5, 1);
         const myCart = new Cart();
-        myCart.addProduct(carrots);
+        myCart.addProduct(carrots, 1);
         expect(myCart.products.length).toEqual(1);
         expect(myCart.total).toEqual(carrots.price);
     });
 
     test('Can remove products to array with removeProduct and total is updated', () => {
-        const strawberries = new Product("Strawberries", 5, "The freshest fresas on the market");
-        const carrots = new Product("Carrots", 2, "Perfect for an afternoon snack");
-        const mangos = new Product("Mangos", 3, "The tastiest fruit you can buy");
+        const strawberries = new Product("Strawberries", 5, "The freshest fresas on the market", 10);
+        const carrots = new Product("Carrots", 2, "Perfect for an afternoon snack", 5);
+        const mangos = new Product("Mangos", 3, "The tastiest fruit you can buy", 3);
         const myCart = new Cart();
-        myCart.addProduct(carrots);
-        myCart.addProduct(mangos);
-        myCart.addProduct(strawberries);
+        myCart.addProduct(carrots, 1);
+        myCart.addProduct(mangos, 1);
+        myCart.addProduct(strawberries, 1);
         myCart.removeProduct(0);
         expect(myCart.products.length).toEqual(2);
         expect(myCart.total).toEqual(8);
     });
 
     test('getTotal returns the total price of items in the cart', () => {
-        const carrots = new Product("Carrots", 4, "Bushel of carrots");
-        const apples = new Product("Apples", 3, "Fresh apples");
+        const carrots = new Product("Carrots", 4, "Bushel of carrots", 5);
+        const apples = new Product("Apples", 3, "Fresh apples", 1);
         const myCart = new Cart();
-        myCart.addProduct(carrots);
-        myCart.addProduct(apples);
+        myCart.addProduct(carrots, 1);
+        myCart.addProduct(apples, 1);
         expect(myCart.getTotal()).toEqual(7); // 4 + 3
     });
     
     test('clear method empties the cart and resets total to 0', () => {
-        const carrots = new Product("Carrots", 4, "Bushel of carrots");
+        const carrots = new Product("Carrots", 4, "Bushel of carrots", 5);
         const myCart = new Cart();
         myCart.addProduct(carrots);
         myCart.clear();
@@ -70,8 +70,8 @@ describe("Cart Tests", () => {
     });
 
     test('removeItemByName removes the specified product by name', () => {
-        const carrots = new Product("Carrots", 2, "Perfect for a snack");
-        const apples = new Product("Apples", 3, "Fresh apples");
+        const carrots = new Product("Carrots", 2, "Perfect for a snack", 5);
+        const apples = new Product("Apples", 3, "Fresh apples", 1);
         const myCart = new Cart();
         myCart.addProduct(carrots);
         myCart.addProduct(apples);
@@ -80,6 +80,22 @@ describe("Cart Tests", () => {
         expect(myCart.products.length).toEqual(1);
         expect(myCart.products[0].name).toEqual("Apples");
     });
+
+    test('addProduct checks for quantity and updates product stock', () => {
+        const mangos = new Product("Mangos", 3, "Tasty mangos", 3, 5);
+        const myCart = new Cart();
+        
+        // Add 2 Mangos to cart
+        const result = myCart.addProduct(mangos, 2);
+        expect(myCart.products.length).toEqual(1);
+        expect(myCart.total).toEqual(6); // 3 * 2
+        expect(result.quantity).toEqual(3); // Remaining quantity is 5 - 2 = 3
+    
+        // Try to add more Mangos than in stock
+        const result2 = myCart.addProduct(mangos, 4);
+        expect(result2).toEqual("I'm sorry there are only 3 of this product left.");
+    });
+    
 })
 
 describe("Customer Tests", () => {
@@ -100,9 +116,9 @@ describe("Customer Tests", () => {
 
     test('addToOrderHistory Cart to orderHistory array', () => {
         const francis = new Customer("Francis", "francis@gmail.com", "222 Main St");
-        const strawberries = new Product("Strawberries", 5, "The freshest fresas on the market");
-        const carrots = new Product("Carrots", 2, "Perfect for an afternoon snack");
-        const mangos = new Product("Mangos", 3, "The tastiest fruit you can buy");
+        const strawberries = new Product("Strawberries", 5, "The freshest fresas on the market", 10);
+        const carrots = new Product("Carrots", 2, "Perfect for an afternoon snack", 5);
+        const mangos = new Product("Mangos", 3, "The tastiest fruit you can buy", 3);
         
         const myFirstOrder = new Cart();
         myFirstOrder.addProduct(mangos);
