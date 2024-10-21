@@ -49,6 +49,15 @@ describe("Cart Tests", () => {
         expect(myCart.products.length).toEqual(2);
         expect(myCart.total).toEqual(8);
     });
+
+    test('getTotal returns the total price of items in the cart', () => {
+        const carrots = new Product("Carrots", 4, "Bushel of carrots");
+        const apples = new Product("Apples", 3, "Fresh apples");
+        const myCart = new Cart();
+        myCart.addProduct(carrots);
+        myCart.addProduct(apples);
+        expect(myCart.getTotal()).toEqual(7); // 4 + 3
+    });    
 })
 
 describe("Customer Tests", () => {

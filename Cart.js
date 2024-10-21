@@ -23,6 +23,10 @@ class Cart {
             throw new Error("Invalid index");
         }
     }
+
+    getTotal() {
+        return this.total;
+    }
 }
 
 module.exports = Cart;
