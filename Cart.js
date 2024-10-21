@@ -32,6 +32,14 @@ class Cart {
         this.products = [];
         this.total = 0;
     }
+
+    removeItemByName(name) {
+        this.products.forEach(product => {
+            if(product.name === name) {
+                this.removeProduct(this.products.indexOf(product));
+            }
+        })
+    }
 }
 
 module.exports = Cart;

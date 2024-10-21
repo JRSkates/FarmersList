@@ -69,6 +69,17 @@ describe("Cart Tests", () => {
         expect(myCart.total).toEqual(0);
     });
 
+    test('removeItemByName removes the specified product by name', () => {
+        const carrots = new Product("Carrots", 2, "Perfect for a snack");
+        const apples = new Product("Apples", 3, "Fresh apples");
+        const myCart = new Cart();
+        myCart.addProduct(carrots);
+        myCart.addProduct(apples);
+        
+        myCart.removeItemByName("Carrots");
+        expect(myCart.products.length).toEqual(1);
+        expect(myCart.products[0].name).toEqual("Apples");
+    });
 })
 
 describe("Customer Tests", () => {
