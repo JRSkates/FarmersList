@@ -27,6 +27,11 @@ class Cart {
     getTotal() {
         return this.total;
     }
+
+    clear() {
+        this.products = [];
+        this.total = 0;
+    }
 }
 
 module.exports = Cart;

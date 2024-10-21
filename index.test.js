@@ -57,7 +57,17 @@ describe("Cart Tests", () => {
         myCart.addProduct(carrots);
         myCart.addProduct(apples);
         expect(myCart.getTotal()).toEqual(7); // 4 + 3
-    });    
+    });
+    
+    test('clear method empties the cart and resets total to 0', () => {
+        const carrots = new Product("Carrots", 4, "Bushel of carrots");
+        const myCart = new Cart();
+        myCart.addProduct(carrots);
+        myCart.clear();
+        expect(myCart.products.length).toEqual(0);
+        expect(myCart.total).toEqual(0);
+    });
+        
 })
 
 describe("Customer Tests", () => {
